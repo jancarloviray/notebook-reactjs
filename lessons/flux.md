@@ -6,9 +6,27 @@ Flux is an idea for organizing your application that was developed at Facebook, 
 
 It is not a framework or a library. It is simply a new kind of architecture that complements React and the concept of *“Unidirectional Data Flow.”*
 
-"Flux is pretty much a made up word to describe “one way” data flow with very specific events and listeners. There is no Flux library but you’ll need the: *Flux Dispatcher* and any JS *event library* such as EventEmitter."
+**https://github.com/facebook/flux**
 
-## FLUX IN BRIEF
+Dispatchers, stores and views are independent nodes with *distinct* inputs and outputs.
+
+*Action creators* are simply discrete, semantic helper functions that facilitate passing data to the *dispatcher* in the form of an *action*
+
+All data flows through the *dispatcher* as a central hub. *Actions* most often originate from user interaction with the *views* and *action creators* are nothing more than a call into the *dispatcher*
+
+The dispatcher then invokes the callbacks that the stores have registered with it, effectively dispatching the data payload contained in the actions to all stores. 
+
+Within their registered callbacks, stores determine which actions they are interested in, and respond accordingly. The stores then emit a "change" event to alert the controller-views that a change to the data layer has occurred. 
+
+Controller-views listen for these events and retrieve data from the stores in an event handler. The controller-views call their own render() method via setState() or forceUpdate(), updating themselves and all of their children.
+
+> This structure allows us to reason easily about our application in a way that is reminiscent of functional reactive programming, or more specifically data-flow programming or flow-based programming, where data flows through the application in a single direction — there are no two-way bindings. 
+
+> Application state is maintained only in the stores, allowing the different parts of the application to remain highly decoupled. 
+
+> Where dependencies do occur between stores, they are kept in a strict hierarchy, with synchronous updates managed by the dispatcher.
+
+## FLUX IN BRIEF SIMPLER TERMS
 
 - Views trigger *actions*, which are just functions that interact with data in some way (for example, you might have an action that fetches data from an API)
 
@@ -20,7 +38,7 @@ It is not a framework or a library. It is simply a new kind of architecture that
 
 - The most important thing to understand about Flux is that it enforces a separation between calling an action and handling its result. *The result of an action has to go into a store's state - it's never directly communicated back to a view.* The store just triggers an "emit" or a "change" event.
 
-## MISC TIPS
+## RANDOM TIPS/NOTES
 
 *The View and the Store* should be completely unaware of each other.
 
@@ -115,7 +133,7 @@ Every choice in software engineering is a trade-off, and Flux is no exception. W
 - Stores: containers for application state and logic that have callbacks registered to the dispatcher.
 - Controller Views: react components that grab the state from stores and pass it down via props to child components
 
-## Flux Flow
+## Flux Flow (with code!)
 
 https://medium.com/brigade-engineering/what-is-the-flux-application-architecture-b57ebca85b9e
 
