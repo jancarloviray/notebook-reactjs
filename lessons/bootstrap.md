@@ -20,10 +20,25 @@ npm install --save-dev watchify
 
 ```
 "scripts": {
-	"start": "watchify -o js/bundle.js -v -d .",
+    "start": "watchify -o js/bundle.js -v -d .",
 	"build": "NODE_ENV=production browserify . | uglify -cm > js/bundle.min.js",
 	"test": "jest"
 }
+```
+
+## structure
+
+```
+/css
+/js
+	/actions
+	/components
+	/constants
+	/dispatcher
+	/stores
+app.js
+index.html
+package.json
 ```
 
 ## index.html
@@ -32,8 +47,8 @@ npm install --save-dev watchify
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Out Of Line</title>
+<meta charset="utf-8">
+<title>Out Of Line</title>
 </head>	
 <body>
 <section id="react"></section>
@@ -45,23 +60,451 @@ npm install --save-dev watchify
 ## Add Flux's Dispatcher
 
 ```
-// AppDispatcher.js
+// js/dispatcher/AppDispatcher.js
+
 var Dispatcher = require('flux').Dispatcher;
+
+// merge/extend library
 var assign = require('object-assign');
 
-/**
- * A bridge function between the views and the dispatcher, marking the action
- * as a view action.  Another variant here could be handleServerAction.
- * @param  {object} action The data coming from the view.
- */
-
 var AppDispatcher = assign(new Dispatcher(), {
+
+	/**
+	* @param {object} action The details of the action, including the actions
+	* type and additional data coming from the server.
+	*/
+
+	handleServerAction: function(action) {
+		var payload = {
+			source: 'SERVER_ACTION',
+			action: action
+		};
+		this.dispatch(payload);
+	},
+
+	/**
+	* A bridge function between the views and the dispatcher, marking the action
+	* as a view action.  Another variant here could be handleServerAction.
+	* @param  {object} action The data coming from the view.
+	*/
+
 	handleViewAction: function(action){
 		this.dispatch({
-			source: 'VIEW_ACTION',
-			action: action
-		});
+	 		source: 'VIEW_ACTION',
+	 		action: action
+	 	});
 	}
+
+});
+
+module.exports = AppDispatcher;
+```
+
+## Create the App
+
+```
+// js/components/app.react.js
+var React = require('react');
+var App = React.createClass({
+	render: function(){
+		return (
+			<div className="outlineapp">Test</div>
+		);
+	}
+});
+
+module.exports = App;
+```
+
+## Create Entry Point (client)
+
+```
+var App = require('./components/app.react.js');
+var React = require('react');
+
+React.renderComponent(
+	<App/>,
+	document.body
+	//document.getElementById('react');
+)
+```
+
+## Create Actions (or "Services")
+
+```
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var TodoConstants = require('../constants/TodoConstants');
+
+var TodoActions = {
+
+  /**
+   * @param  {string} text
+   */
+
+  create: function(text) {
+    AppDispatcher.dispatch({
+      actionType: TodoConstants.TODO_CREATE,
+      text: text
+    });
+  },
+
+  /**
+   * @param  {string} id The ID of the ToDo item
+   * @param  {string} text
+   */
+
+  updateText: function(id, text) {
+    AppDispatcher.dispatch({
+      actionType: TodoConstants.TODO_UPDATE_TEXT,
+      id: id,
+      text: text
+    });
+  },
+
+  /**
+   * Toggle whether a single ToDo is complete
+   * @param  {object} todo
+   */
+
+  toggleComplete: function(todo) {
+    var id = todo.id;
+    if (todo.complete) {
+      AppDispatcher.dispatch({
+        actionType: TodoConstants.TODO_UNDO_COMPLETE,
+        id: id
+      });
+    } else {
+      AppDispatcher.dispatch({
+        actionType: TodoConstants.TODO_COMPLETE,
+        id: id
+      });
+    }
+  },
+
+  /**
+   * Mark all ToDos as complete
+   */
+
+  toggleCompleteAll: function() {
+    AppDispatcher.dispatch({
+      actionType: TodoConstants.TODO_TOGGLE_COMPLETE_ALL
+    });
+  },
+
+  /**
+   * @param  {string} id
+   */
+
+  destroy: function(id) {
+    AppDispatcher.dispatch({
+      actionType: TodoConstants.TODO_DESTROY,
+      id: id
+    });
+  },
+
+  /**
+   * Delete all the completed ToDos
+   */
+
+  destroyCompleted: function() {
+    AppDispatcher.dispatch({
+      actionType: TodoConstants.TODO_DESTROY_COMPLETED
+    });
+  }
+
+};
+
+module.exports = TodoActions;
+```
+
+## Add a Store and Register it with the Dispatcher 
+
+```
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var EventEmitter = require('events').EventEmitter;
+var TodoConstants = require('../constants/TodoConstants');
+var assign = require('object-assign');
+
+var CHANGE_EVENT = 'change';
+
+var _todos = {};
+
+/**
+ * Create a TODO item.
+ * @param  {string} text The content of the TODO
+ */
+function create(text) {
+  // Hand waving here -- not showing how this interacts with XHR or persistent
+  // server-side storage.
+  // Using the current timestamp + random number in place of a real id.
+  var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+  _todos[id] = {
+    id: id,
+    complete: false,
+    text: text
+  };
 }
-})
+
+/**
+ * Update a TODO item.
+ * @param  {string} id
+ * @param {object} updates An object literal containing only the data to be
+ *     updated.
+ */
+function update(id, updates) {
+  _todos[id] = assign({}, _todos[id], updates);
+}
+
+/**
+ * Update all of the TODO items with the same object.
+ *     the data to be updated.  Used to mark all TODOs as completed.
+ * @param  {object} updates An object literal containing only the data to be
+ *     updated.
+
+ */
+function updateAll(updates) {
+  for (var id in _todos) {
+    update(id, updates);
+  }
+}
+
+/**
+ * Delete a TODO item.
+ * @param  {string} id
+ */
+function destroy(id) {
+  delete _todos[id];
+}
+
+/**
+ * Delete all the completed TODO items.
+ */
+function destroyCompleted() {
+  for (var id in _todos) {
+    if (_todos[id].complete) {
+      destroy(id);
+    }
+  }
+}
+
+var TodoStore = assign({}, EventEmitter.prototype, {
+
+  /**
+   * Tests whether all the remaining TODO items are marked as completed.
+   * @return {boolean}
+   */
+  areAllComplete: function() {
+    for (var id in _todos) {
+      if (!_todos[id].complete) {
+        return false;
+      }
+    }
+    return true;
+  },
+
+  /**
+   * Get the entire collection of TODOs.
+   * @return {object}
+   */
+  getAll: function() {
+    return _todos;
+  },
+
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+});
+
+// Register callback to handle all updates
+AppDispatcher.register(function(action) {
+  var text;
+
+  switch(action.actionType) {
+    case TodoConstants.TODO_CREATE:
+      text = action.text.trim();
+      if (text !== '') {
+        create(text);
+      }
+      TodoStore.emitChange();
+      break;
+
+    case TodoConstants.TODO_TOGGLE_COMPLETE_ALL:
+      if (TodoStore.areAllComplete()) {
+        updateAll({complete: false});
+      } else {
+        updateAll({complete: true});
+      }
+      TodoStore.emitChange();
+      break;
+
+    case TodoConstants.TODO_UNDO_COMPLETE:
+      update(action.id, {complete: false});
+      TodoStore.emitChange();
+      break;
+
+    case TodoConstants.TODO_COMPLETE:
+      update(action.id, {complete: true});
+      TodoStore.emitChange();
+      break;
+
+    case TodoConstants.TODO_UPDATE_TEXT:
+      text = action.text.trim();
+      if (text !== '') {
+        update(action.id, {text: text});
+      }
+      TodoStore.emitChange();
+      break;
+
+    case TodoConstants.TODO_DESTROY:
+      destroy(action.id);
+      TodoStore.emitChange();
+      break;
+
+    case TodoConstants.TODO_DESTROY_COMPLETED:
+      destroyCompleted();
+      TodoStore.emitChange();
+      break;
+
+    default:
+      // no op
+  }
+});
+
+module.exports = TodoStore;
+```
+
+## Write the View and tie the actions
+
+```
+/**
+ * This component operates as a "Controller-View".  It listens for changes in
+ * the TodoStore and passes the new data to its children.
+ */
+
+var Footer = require('./Footer.react');
+var Header = require('./Header.react');
+var MainSection = require('./MainSection.react');
+var React = require('react');
+var TodoStore = require('../stores/TodoStore');
+
+/**
+ * Retrieve the current TODO data from the TodoStore
+ */
+function getTodoState() {
+  return {
+    allTodos: TodoStore.getAll(),
+    areAllComplete: TodoStore.areAllComplete()
+  };
+}
+
+var TodoApp = React.createClass({
+
+  getInitialState: function() {
+    return getTodoState();
+  },
+
+  componentDidMount: function() {
+    TodoStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    TodoStore.removeChangeListener(this._onChange);
+  },
+
+  /**
+   * @return {object}
+   */
+  render: function() {
+  	return (
+      <div>
+        <Header />
+        <MainSection
+          allTodos={this.state.allTodos}
+          areAllComplete={this.state.areAllComplete}
+        />
+        <Footer allTodos={this.state.allTodos} />
+      </div>
+  	);
+  },
+
+  /**
+   * Event handler for 'change' events coming from the TodoStore
+   */
+  _onChange: function() {
+    this.setState(getTodoState());
+  }
+
+});
+
+module.exports = TodoApp;
+```
+
+```
+var React = require('react');
+var ReactPropTypes = React.PropTypes;
+var TodoActions = require('../actions/TodoActions');
+var TodoItem = require('./TodoItem.react');
+
+var MainSection = React.createClass({
+
+  propTypes: {
+    allTodos: ReactPropTypes.object.isRequired,
+    areAllComplete: ReactPropTypes.bool.isRequired
+  },
+
+  /**
+   * @return {object}
+   */
+  render: function() {
+    // This section should be hidden by default
+    // and shown when there are todos.
+    if (Object.keys(this.props.allTodos).length < 1) {
+      return null;
+    }
+
+    var allTodos = this.props.allTodos;
+    var todos = [];
+
+    for (var key in allTodos) {
+      todos.push(<TodoItem key={key} todo={allTodos[key]} />);
+    }
+
+    return (
+      <section id="main">
+        <input
+          id="toggle-all"
+          type="checkbox"
+          onChange={this._onToggleCompleteAll}
+          checked={this.props.areAllComplete ? 'checked' : ''}
+        />
+        <label htmlFor="toggle-all">Mark all as complete</label>
+        <ul id="todo-list">{todos}</ul>
+      </section>
+    );
+  },
+
+  /**
+   * Event handler to mark all TODOs as complete
+   */
+  _onToggleCompleteAll: function() {
+    TodoActions.toggleCompleteAll();
+  }
+
+});
+
+module.exports = MainSection;
 ```
