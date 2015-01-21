@@ -8,11 +8,13 @@ render() is just regular javascript. You get full power of JS in your rendering 
 
 It is fast (as fast or even faster than native DOM).
 
-You don't have to give up flexibility for simplicity. You can have both.
+You don't have to give up flexibility for simplicity. You can have
 
 With Flux, it pushes towards unidirectional flow, reducing complexity and increasing predictability.
 
 I like how the jsx and component (not business!) logic is in just one file.
+
+"Suffice to say, that in many cases React is much faster than angular. Develop with angular enough, and you will run into situations where the dirty-checking digest cycle is too slow for the requirements of your application. For these cases, a rather painless solution is to use ngReact. ngReact allows you to include React components inside of an angular application. The first React component I ever built was a re-write of a 20-month calendar widget originally written in angular. The rewrite took about a day which is a testament to the rather easy learning curve of React and the simplicity of ngReact. I didn’t even attempt to do any shouldComponentUpdate() optimizations in the React component and it was several times faster than it’s angular counterpart." - https://medium.com/@gilbox/how-can-react-and-flux-help-us-create-better-stronger-faster-angular-applications-639247898fb
 
 ## components
 
