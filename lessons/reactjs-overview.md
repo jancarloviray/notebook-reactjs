@@ -2,7 +2,17 @@
 
 One unique selling points is that ReactJS can also be rendered server side and can work with client/server inter-operably.
 
-React has two kinds of mutable state: specific top-down variables called `props` and the more generic state.
+## Why React?
+
+render() is just regular javascript. You get full power of JS in your rendering code and not constrained by what your templating language is capable of. You can use map, reduce, filter, groupBy and etc.
+
+It is fast (as fast or even faster than native DOM).
+
+You don't have to give up flexibility for simplicity. You can have both.
+
+With Flux, it pushes towards unidirectional flow, reducing complexity and increasing predictability.
+
+I like how the jsx and component (not business!) logic is in just one file.
 
 ## components
 

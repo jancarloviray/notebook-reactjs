@@ -6,6 +6,8 @@ Flux is an idea for organizing your application that was developed at Facebook, 
 
 It is not a framework or a library. It is simply a new kind of architecture that complements React and the concept of *“Unidirectional Data Flow.”*
 
+(sidenote: wow, someone made a game using react! http://www.petehunt.net/wolfenstein3D-react/)
+
 **https://github.com/facebook/flux**
 
 Dispatchers, stores and views are independent nodes with *distinct* inputs and outputs.
