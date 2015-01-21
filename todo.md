@@ -1,6 +1,14 @@
 # TODO
 
-- fully understand the “thinking in react” mentality and go through line by line of code in this link: http://facebook.github.io/react/docs/thinking-in-react.html
+https://github.com/enaqx/awesome-react
+
+- read through isomorphic javascript: http://www.htmlxprs.com/post/20/creating-isomorphic-apps-with-react-and-nodejs
+- http://kevinold.com/2015/01/14/react-and-flux-talk-at-nashjs.html
+- http://tylermcginnis.com/reactjs-tutorial-a-comprehensive-guide-to-building-apps-with-react/
+- http://viget.com/extend/building-a-multi-step-registration-form-with-react
+
+- read through 
+
 - http://www.sitepoint.com/creating-note-taking-app-react-flux/
 - read through this: https://www.codementor.io/reactjs/tutorial/react-js-flux-architecture-tutorial
 - https://scotch.io/tutorials/creating-a-simple-shopping-cart-with-react-js-and-flux
