@@ -26,6 +26,113 @@ npm install --save-dev watchify
 }
 ```
 
+## (opt) gulp build
+
+```
+npm install --save-dev gulp gulp-concat gulp-uglify gulp-react gulp-html-replace
+npm install --save-dev source browserify watchify reactify streamify
+
+//gulpfile.js
+var gulp = require('gulp');
+var uglify = require('gulp-uglify');
+var htmlreplace = require('gulp-html-replace');
+var source = require('vinyl-source-stream');
+var browserify = require('browserify');
+var watchify = require('watchify');
+var reactify = require('reactify');
+var streamify = require('gulp-streamify');
+
+var path = {
+	HTML: 'src/index.html',
+	MINIFIED_OUT: 'build.min.js',
+	OUT: 'build.js',
+	DEST: 'dist',
+	DEST_BUILD: 'dist/build',
+	DEST_SRC: 'dist/src',
+	ENTRY_POINT: './src/js/App.js'
+};
+
+gulp.task('copy', function(){
+	gulp.src(path.HTML)
+	.pipe(gulp.dest(path.DEST));
+});
+
+gulp.task('watch', function() {
+	// The very first thing we do is tell Gulp to watch 
+	// our index.html file for any changes and if 
+	// something does change, run the copy task.
+	gulp.watch(path.HTML, ['copy']);
+
+	// The next thing we do is set up a watcher. 
+	// Watchify works very closely with Browserify. 
+	// A problem that was occurring with 
+	// these Browserify/React build processes 
+	// was that Browserify would take forever 
+	// to transpile because it was going through 
+	// every component every single time anything 
+	// changed and would re-update the 
+	// new bundled file. Watchify fixes this. 
+	// Instead of going through every file, 
+	// Watchify will cache your files and 
+	// only update the ones that need to be updated. 
+	// This makes builds take a LOT less time.
+	var watcher  = watchify(browserify({
+		// one perk with browserify is that you 
+		// just tell it the entry point or the main 
+		// component in your app and it will 
+		// take care of all the child components
+		entries: [path.ENTRY_POINT],
+
+		// Next we have the transform property. 
+		// Browserify works with more than just React. 
+		// Here is where we tell Browserify how 
+		// to transform our code.
+		transform: [reactify],
+
+		// his tells Browserify to use source maps. 
+		// What source maps do is even though we’re 
+		// referencing the transpiled JSX in our 
+		// index.html page, through source maps 
+		// when there is an error in our code, the 
+		// error will point to the line number in 
+		// our JSX file rather than our transpiled JS file. 
+		debug: true,
+
+		// watchify website just states that 
+		// these are needed in order to use watchify.
+		cache: {}, packageCache: {}, fullPaths: true
+	}));
+
+	// The next thing we’re going to do is set up 
+	// our watcher to watch for updates in our 
+	// parent component or in any of its children 
+	// components. We tell our watcher to watch 
+	// for updates then we pass it a callback 
+	// function to invoke whenever there is an update.
+	return watcher.on('update', function () {
+		watcher.bundle()
+		.pipe(source(path.OUT))
+		.pipe(gulp.dest(path.DEST_SRC))
+		console.log('Updated');
+	})
+	.bundle()
+	.pipe(source(path.OUT))
+	.pipe(gulp.dest(path.DEST_SRC));
+});
+
+// production
+gulp.task('build', function(){
+  browserify({
+    entries: [path.ENTRY_POINT],
+    transform: [reactify],
+  })
+    .bundle()
+    .pipe(source(path.MINIFIED_OUT))
+    .pipe(streamify(uglify(path.MINIFIED_OUT)))
+    .pipe(gulp.dest(path.DEST_BUILD));
+});
+```
+
 ## structure
 
 ```
@@ -57,7 +164,7 @@ package.json
 </html>
 ```
 
-## Add Flux's Dispatcher
+## Add Flux Dispatcher
 
 ```
 // js/dispatcher/AppDispatcher.js
