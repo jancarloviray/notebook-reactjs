@@ -40,3 +40,22 @@ Now open index.html. It should show “It works from content.js”
 webpack will analyze your entry file for dependencies to other files
 */
 ```
+
+## webpack.config.js
+
+This allows you to just run “webpack” instead of putting arguments in the command as the above example
+
+```
+module.exports = {
+    entry: ‘./entry.js’,
+    output: {
+        path: __dirname,
+        filename: ‘bundle.js’
+    },
+    module: {
+        loaders: [
+            {test:/\.css$/, loader: ‘style!css’}
+        ]
+    }
+};
+```
