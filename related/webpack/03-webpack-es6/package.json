@@ -1,0 +1,19 @@
+{
+  "name": "03-webpack-es6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Person.js",
+  "dependencies": {
+    "6to5": "^2.13.5",
+    "6to5-loader": "^2.0.0",
+    "webpack": "^1.5.3"
+  },
+  "devDependencies": {
+    "6to5-loader": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
