@@ -3,7 +3,7 @@
 'use strict'
 
 var React = require('react');
-var Hello = require('./Hello');
+var Hello = require('./hello');
 
 React.render(
     <Hello />,

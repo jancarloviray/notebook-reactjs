@@ -1,10 +1,12 @@
 'use strict'
 
-var Reach = require('react');
+var React = require('react');
 
-module.export = React.createClass({
+module.exports = React.createClass({
     displayName: 'HelloReact',
     render: function(){
-        return <div>Hello React</div>
+        return (
+            <div>Hello React</div>
+        )
     }
 });
