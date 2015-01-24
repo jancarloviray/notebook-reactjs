@@ -3,7 +3,7 @@
 <head>
     <title>Basic ReactJS Sample with webpack-dev-server</title>
     <!-- include react -->
-    <script src="./node_modules/react/dist/react-with-addons.js"></script>
+    <script src="./node_modules/react/dist/react.js"></script>
 </head>
 <body>
     <!-- include the webpack-dev-server script so our scripts get reloaded when we make a change -->
@@ -11,6 +11,6 @@
     <script src="http://localhost:8090/webpack-dev-server.js"></script>
     <!-- include the bundle that contains all our scripts, produced by webpack -->
     <!-- the bundle is served by the webpack-dev-server, so serve it also from localhost:8090 -->
-    <script type="text/javascript" src="http://localhost:8090/assets/bundle.js"></script>
+    <script type="text/javascript" src="//localhost:8090/bundle.js"></script>
 </body>
 </html>

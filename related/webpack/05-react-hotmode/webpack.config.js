@@ -1,10 +1,17 @@
 module.exports = {
     entry: './app.jsx',
+
+    // entry: {
+    //     app: ['webpack/hot/dev-server', './app.jsx']
+    // },
+
+    // where the compiled js will be outputted
     output: {
         filename: 'bundle.js',
+        path: __dirname,
 
-        // make sure 8090 is port for webpack-dev-server
-        publicPath: 'http://localhost:8090/assets'
+        // this is used to generate URLs, ie: put cdn url here
+        // publicPath: 'http://localhost:8080/assets'
     },
     module: {
         loaders: [
@@ -19,6 +26,7 @@ module.exports = {
         'react':'React'
     },
     resolve: {
+        // allow to omit extension when doing 'require'
         extensions: ['', '.js','.jsx']
     }
 }
