@@ -4,7 +4,7 @@
 
 ### Application Modules
 
-```
+```javascript
 # helper files to create the flux architecture
 npm install --save flux
 
@@ -22,7 +22,7 @@ npm install --save react
 
 #### Webpack Build
 
-```
+```javascript
 # browserify alternative; in fact, better than browserify
 npm install --save-dev webpack
 
@@ -45,7 +45,7 @@ The webpack-dev-server is a little node.js express server which uses the webpack
 
 NOTE: this should not be run in the backend as production!
 
-```
+```javascript
 // webpackDevServer.js
 
 var webpack = require('webpack');
@@ -88,7 +88,7 @@ new WebpackDevServer(compiler, {
 
 ## npm run scripts
 
-```
+```javascript
 // package.json
 
 “scripts”:{
@@ -100,7 +100,7 @@ new WebpackDevServer(compiler, {
 
 ## (opt) gulp build
 
-```
+```javascript
 npm install --save-dev gulp gulp-concat gulp-uglify gulp-react gulp-html-replace
 npm install --save-dev source browserify watchify reactify streamify
 
@@ -222,7 +222,7 @@ package.json
 
 ## index.html
 
-```
+```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -238,7 +238,7 @@ package.json
 
 ## Add Flux Dispatcher
 
-```
+```javascript
 // js/dispatcher/AppDispatcher.js
 
 var Dispatcher = require('flux').Dispatcher;
@@ -281,7 +281,7 @@ module.exports = AppDispatcher;
 
 ## Create the App
 
-```
+```javascript
 // js/components/app.react.js
 var React = require('react');
 var App = React.createClass({
@@ -297,7 +297,7 @@ module.exports = App;
 
 ## Create Entry Point (client)
 
-```
+```javascript
 var App = require('./components/app.react.js');
 var React = require('react');
 
@@ -310,7 +310,7 @@ React.renderComponent(
 
 ## Create Actions (or "Services")
 
-```
+```javascript
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var TodoConstants = require('../constants/TodoConstants');
 
@@ -398,7 +398,7 @@ module.exports = TodoActions;
 
 ## Add a Store and Register it with the Dispatcher 
 
-```
+```javascript
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var TodoConstants = require('../constants/TodoConstants');
@@ -568,7 +568,7 @@ module.exports = TodoStore;
 
 ## Write the View and tie the actions
 
-```
+```javascript
 /**
  * This component operates as a "Controller-View".  It listens for changes in
  * the TodoStore and passes the new data to its children.
@@ -632,7 +632,7 @@ var TodoApp = React.createClass({
 module.exports = TodoApp;
 ```
 
-```
+```javascript
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 var TodoActions = require('../actions/TodoActions');
