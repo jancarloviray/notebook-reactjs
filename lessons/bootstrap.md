@@ -4,7 +4,7 @@
 
 ### Application Modules
 
-```javascript
+```bash
 # helper files to create the flux architecture
 npm install --save flux
 
@@ -22,7 +22,7 @@ npm install --save react
 
 #### Webpack Build
 
-```javascript
+```bash
 # browserify alternative; in fact, better than browserify
 npm install --save-dev webpack
 
@@ -97,6 +97,9 @@ new WebpackDevServer(compiler, {
     “dev”:”NODE_ENV=development node_modules/.bin/supervisor --ignore build/ -e js server & NODE_ENV=development node webpackDevServer.js --progress”
 }
 ```
+
+
+
 
 ## (opt) gulp build
 
