@@ -2,27 +2,99 @@
 
 ## package.json
 
+### Application Modules
+
 ```
+# helper files to create the flux architecture
 npm install --save flux
+
+# A simple utility for creating an object with values equal to its keys. Identical to react/lib/keyMirror
 npm install --save keymirror
+
+# _.extend or a ‘shim’ to Object.assign
 npm install --save object-assign
+
+# reactjs utilities and core
 npm install --save react
 ```
 
-```
-npm install --save-dev browserify
-npm install --save-dev envify
-npm install --save-dev jest-cli
-npm install --save-dev reactify
-npm install --save-dev uglify-js
-npm install --save-dev watchify
-```
+### Development Modules
+
+#### Webpack Build
 
 ```
-"scripts": {
-    "start": "watchify -o js/bundle.js -v -d .",
-	"build": "NODE_ENV=production browserify . | uglify -cm > js/bundle.min.js",
-	"test": "jest"
+# browserify alternative; in fact, better than browserify
+npm install --save-dev webpack
+
+# for better live-reload (hot loading)
+npm install --save-dev webpack-dev-server
+
+# webpack loader for jsx files
+npm install --save-dev jsx-loader
+
+# script for nodejs to watch for code changes, and restart
+# your program when it crashes or when a file changes
+npm install --save-dev supervisor
+```
+
+## webpack-dev-server (better livereload)
+
+http://webpack.github.io/docs/webpack-dev-server.html
+
+The webpack-dev-server is a little node.js express server which uses the webpack-dev-middleware to serve a webpack bundle. It also has a little runtime which is connected to the server via socket.io. The server emits information about the compilation state to the client, which reacts to those events.
+
+NOTE: this should not be run in the backend as production!
+
+```
+// webpackDevServer.js
+
+var webpack = require('webpack');
+var WebpackDevServer = require('require-dev-server');
+var config = require('./webpack.config');
+var port = process.env.HOT_LOAD_PORT || 3001;
+var compiler = webpack(config)
+
+new WebpackDevServer(compiler, {
+    // webpack-dev-server options
+    // --------------------------
+
+    // Base path for the content.
+    // Can be file, directory or url.
+    contentBase: 'http://localhost:3000',
+
+    // Important for 'hot module replacement'.
+    hot: true
+
+    // webpack-dev-middleware options
+    // ------------------------------
+
+    // The path where to bind the middleware
+    // to the server. In most cases, this
+    // equals the webpack configuration options
+    // `output.publicPath`
+    publicPath: config.output.publicPath,
+
+    // only warnings and errors will be
+    // displayed to console
+    noInfo: true,
+
+    // the delay after a change
+    watchDelay: 100
+}).listen(port, 'localhost', function(err, result){
+    if(err){ console.error(err); }
+    console.log('WebpackDevServer listening at localhost:' + port);
+});
+```
+
+## npm run scripts
+
+```
+// package.json
+
+“scripts”:{
+    // `npm run dev` invokes supervisor to watch for file changes and crashes
+    // then reruns the server. It also invokes webpack-dev-server (hot loading).
+    “dev”:”NODE_ENV=development node_modules/.bin/supervisor --ignore build/ -e js server & NODE_ENV=development node webpackDevServer.js --progress”
 }
 ```
 
