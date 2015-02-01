@@ -1,6 +1,32 @@
-# BOOTSTRAPPING A PROJECT
+# Bootstrapping a ReactJS Project
 
-## package.json
+## Requirements
+
+- ReactJS
+- Flux (facebook/flux)
+- Gulp (general build)
+- Webpack (js/jsx build)
+- Webpack Dev Server (livereload/hotreload)
+- ExpressJS (server)
+- Docker
+- Testing Framework (?)
+
+## Table of Contents
+
+- Required Application Modules
+- Required Development Modules
+- Live Reload / Hot Reload Setup
+- JS/JSX Build System with Watch
+- CSS/LESS Build System with Watch
+- Directory Setup (build, dist, client, server, test)
+- Automated Environment Specific Build System (production/development)
+- Initial Server Bootstrap with Express and Supervisor
+- Initial Client Bootstrap with ReactJS
+- Introduction of Flux Architecture
+- Automated Testing with Watch
+- Docker Integration
+
+## Required Modules
 
 ### Application Modules
 
@@ -37,13 +63,13 @@ npm install --save-dev jsx-loader
 npm install --save-dev supervisor
 ```
 
-## webpack-dev-server (better livereload)
+## Hot Reload (better livereload)
 
 http://webpack.github.io/docs/webpack-dev-server.html
 
 The webpack-dev-server is a little node.js express server which uses the webpack-dev-middleware to serve a webpack bundle. It also has a little runtime which is connected to the server via socket.io. The server emits information about the compilation state to the client, which reacts to those events.
 
-NOTE: this should not be run in the backend as production!
+NOTE: this should not be run during production!
 
 ```javascript
 // webpackDevServer.js
