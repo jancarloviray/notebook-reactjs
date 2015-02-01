@@ -1,4 +1,11 @@
-# Bootstrapping a ReactJS Project
+# Bootstrapping a ReactJS Isomorphic Application Project
+
+## Inspirations
+
+- [React-Isomorphic-Seed](https://github.com/htmlxprs/React-Isomorphic-Seed)
+- [isomorphic-react-template](https://github.com/gpbl/isomorphic-react-template)
+- [react-starter-kit](https://github.com/kriasoft/react-starter-kit)
+- [isomorphic-hot-loader](https://github.com/irvinebroque/isomorphic-hot-loader)
 
 ## Requirements
 
@@ -174,8 +181,12 @@ var config = {
     // http://webpack.github.io/docs/configuration.html#entry
 
     entry: [
+        // http://webpack.github.io/docs/hot-module-replacement-with-webpack.html
+        // These are for hot-module-replacement or HMR.
+        // This is an experimental feature but is usable
         'webpack-dev-server/client?http://localhost:3001',
         'webpack/hot/dev-server',
+
         './client.js'
     ],
 
