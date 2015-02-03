@@ -4,13 +4,13 @@ Goal for this project is to create an Isomorphic Project with ReactJS with line-
 
 ## Requirements
 
-- ReactJS (client/server-side view)
-- Flux (facebook/flux, the architecture for react)
-- Gulp (general build; might not be needed)
-- Webpack (js/jsx build and more)
-- Webpack Dev Server (for “Hot Loading” - a better livereload)
-- ExpressJS (minimal server)
-- Docker (for isolated containers like Heroku)
+- [ReactJS](facebook.github.io/react/) (client/server-side view)
+- [Flux](https://github.com/facebook/flux) (facebook/flux, the architecture for react)
+- [Gulp](https://github.com/gulpjs/gulp) (general build; might not be needed)
+- [Webpack](https://github.com/webpack/webpack) (js/jsx build and more)
+- [Webpack](https://github.com/webpack/webpack-dev-server) Dev Server (for “Hot Loading” - a better livereload)
+- [ExpressJS](https://github.com/expressjs) (minimal server)
+- [Docker](https://github.com/docker/docker) (for isolated containers like Heroku)
 - Testing Framework (?)
 
 ## Table of Contents
