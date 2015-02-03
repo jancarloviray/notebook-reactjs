@@ -1,8 +1,9 @@
 var webpack = require('webpack');
 var WebpackDevServer = require('require-dev-server');
 var config = require('./webpack.config');
-var port = process.env.HOT_LOAD_PORT || 3001;
 var compiler = webpack(config)
+
+var port = process.env.HOT_LOAD_PORT || 3001;
 
 new WebpackDevServer(compiler, {
     // webpack-dev-server options
