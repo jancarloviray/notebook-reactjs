@@ -1,11 +1,7 @@
-# Bootstrapping a ReactJS Isomorphic Application Project
+# Bootstrapping an Isomorphic Application
 
-## Inspirations
+Goal for this document is to create an Isomorphic Project with ReactJS/NodeJS with line-by-line explanation within the codes.
 
-- [React-Isomorphic-Seed](https://github.com/htmlxprs/React-Isomorphic-Seed)
-- [isomorphic-react-template](https://github.com/gpbl/isomorphic-react-template)
-- [react-starter-kit](https://github.com/kriasoft/react-starter-kit)
-- [isomorphic-hot-loader](https://github.com/irvinebroque/isomorphic-hot-loader)
 
 ## Requirements
 
@@ -24,14 +20,21 @@
 - Required Application Modules
 - Required Development Modules
 - Live Reload / Hot Reload Setup
+
+TODO:
 - JS/JSX Build System with Watch
-- CSS/LESS Build System with Watch
-- Automated Environment Specific Build System (production/development)
 - Initial Server Bootstrap with Express and Supervisor
 - Initial Client Bootstrap with ReactJS
 - Introduction of Flux Architecture
 - Automated Testing with Watch
 - Docker Integration
+- CSS/LESS Build System with Watch
+- Automated Environment Specific Build System (production/development)
+
+FUTURE:
+- productionize this
+- yahoo/fluxible integration
+- example app
 
 ## Directory Setup
 
@@ -78,6 +81,13 @@ npm install --save-dev jsx-loader
 # script for nodejs to watch for code changes, and restart
 # your program when it crashes or when a file changes
 npm install --save-dev supervisor
+
+# es6 to es5
+npm install --save-dev 6to5-core
+npm install --save-dev 6to5-loader
+
+npm install --save-dev react-hot-loader
+npm install --save-dev react-tools
 ```
 
 ## Hot Reload (better livereload)
@@ -101,26 +111,18 @@ new WebpackDevServer(compiler, {
     // webpack-dev-server options
     // --------------------------
 
-    // Base path for the content.
-    // Can be file, directory or url.
+    // Base path for the content. Can be file, directory or url.
     contentBase: 'http://localhost:3000',
-
     // Important for 'hot module replacement'.
     hot: true
 
     // webpack-dev-middleware options
     // ------------------------------
 
-    // The path where to bind the middleware
-    // to the server. In most cases, this
-    // equals the webpack configuration options
-    // `output.publicPath`
+    // The path where to bind the middleware to the server. In most cases, this equals the webpack configuration options `output.publicPath`
     publicPath: config.output.publicPath,
-
-    // only warnings and errors will be
-    // displayed to console
+    // only warnings and errors will be displayed to console
     noInfo: true,
-
     // the delay after a change
     watchDelay: 100
 }).listen(port, 'localhost', function(err, result){
@@ -135,9 +137,9 @@ new WebpackDevServer(compiler, {
 // package.json
 
 “scripts”:{
-    // `npm run dev` invokes supervisor to watch for file changes and crashes
-    // then reruns the server. This command also invokes webpack-dev-server (hot loading).
-    “dev”:”NODE_ENV=development node_modules/.bin/supervisor --ignore build/ -e js server & NODE_ENV=development node webpackDevServer.js --progress”
+    // `npm run dev` invokes supervisor to watch for file changes and crashes then reruns the server. This command also invokes webpack-dev-server (hot loading).
+    “dev”:”NODE_ENV=development node_modules/.bin/supervisor --harmony --ignore build/ -e js server & NODE_ENV=development node webpackDevServer.js --progress”,
+    “start”:”NODE_ENV=production node --harmony server”
 }
 ```
 
@@ -145,135 +147,83 @@ new WebpackDevServer(compiler, {
 
 ```javascript
 var webpack = require('webpack');
+var path = require('path');
 
-// part of webpack's dependency injection.
-// this defines free variables. it is useful for having development
-// build with debug loggin or adding global constants.
+// part of webpack's dependency injection. This defines free variables. it is useful for having development build with debug logging or adding global constants.
 // http://webpack.github.io/docs/list-of-plugins.html#defineplugin
-
-var definePlugin = new webpack.DefinePlugin({ IS_CLIENT: 'true' });
+// var definePlugin = new webpack.DefinePlugin({ IS_CLIENT: 'true' });
 
 var config = {
 
-    // cache generated modules and chunks to
-    // improve performance for multiple
-    // incremental builds. This is enabled
-    // by default in watch mode
+    // cache generated modules and chunks to improve performance for multiple incremental builds. This is enabled by default in watch mode.
 
     cache: true,
 
     resolve: {
-        // an array of extension that should be
-        // used to resolve modules. this will
-        // allow you to not have the need to type
-        // in the 'js' in require('someModule.js')
+        // an array of extension that should be used to resolve modules. This allows to omit extensions when requiring files.
         extensions: ['', '.js']
     },
 
-    // the entry point for the bundle.
-    // If you pass a string, the string resolves
-    // to a module which is loaded upon startup.
-    // If you pass an array, all modules are loaded
-    // upon startup and the last one is exported.
-    // If you pass an object, multiple entry bundles
-    // are created.
-    //
+    // the entry point for the bundle. If you pass a string, the string resolves to a module which is loaded upon startup. If you pass an array, all modules are loaded upon startup and the last one is exported. If you pass an object, multiple entry bundles are created.
     // http://webpack.github.io/docs/configuration.html#entry
 
     entry: [
+        // These are for hot-module-replacement or HMR. This is an experimental feature but is usable.
         // http://webpack.github.io/docs/hot-module-replacement-with-webpack.html
-        // These are for hot-module-replacement or HMR.
-        // This is an experimental feature but is usable
         'webpack-dev-server/client?http://localhost:3001',
         'webpack/hot/dev-server',
 
+        // entry point
         './client.js'
     ],
 
     // options affecting the output
     output: {
-        // the output directory as absolute path
-        path: __dirname + '/build/',
+        // the output directory as absolute path. This is where to put build results when doing production builds.
+        path: path.join(__dirname, '/build/')
 
-        // the filename of the chunk as relative path
-        // inside the output.path directory.
-        // Note that you must NOT specify an absolute
-        // path here. Use the output.path option.
+        // the filename of the chunk as relative path inside the output.path directory. Note that you must NOT specify an absolute path here. Use the output.path option.
         // [name] is replaced by name of chunk.
         // [hash] is replace by hash of compilation
         // [chunkhash] is replaced by hash of chunk
         //
-        // here, the output will be on
-        // /build/client.js so you must include
-        // <script src='/build/client.js' defer>...
-        // in your index.
-
+        // here, the output will be on /build/client.js so you must include <script src='/build/client.js' defer>... in your index.
         filename: 'client.js',
 
-        // the output.path from the javascript
-        // perspective. If you do not know the
-        // publicPath while compiling, you can
-        // omit it and set __webpack_public_path__
-        // on runtime.
-        //
-        // this is for development mode, so
-        // if NODE_ENV === 'development', add this:
-        // <script src='http://localhost:3001/build/client.js'...
-
-        publicPath: 'http://localhost:3001/build'
+        // the output.path from the javascript perspective. If you do not know the publicPath while compiling, you can omit it and set __webpack_public_path__ on runtime. This will be the path to use in HTML
+        // this is for development mode, so if NODE_ENV === 'development', add this: <script src='http://localhost:3001/build/client.js'...
+        publicPath: 'http://localhost:3001/build/'
     },
 
-    // plugins are included in your module by using
-    // the plugins propery here
-
+    // plugins are included in your module by using the plugins propery here
     plugins: [
-
         // enables hot module replacement
-
         new webpack.HotModuleReplacementPlugin(),
-
-        definePlugin
     ],
 
     module: {
-
-        // an array of automatically applied loaders.
-        // Each item can have these properties:
-        //
+        // an array of automatically applied loaders. Each item can have these properties:
         // test: a condition that must be met
         // exclude: a condition that must not be met
         // include: a condition that must be met
         // loader: a string of '!' separated loaders
         // loaders: an array of loaders as string
-
         loaders: [
-
-            // NOTE: the loaders here are resolved to the
-            // resources which they are applied to. This
-            // means that they are not resolved relative to
-            // the configuration file. If you have loaders
-            // installed from npm and your node_modules
-            // folder is not part of the parent folder of
-            // all source files, webpack cannot find the
-            // loader. You need to add node_modules as
-            // absolute path to the `resolveLoader.root`
-            // option.
-            //
-            // {resolveLoader:{root:path.join(__dirname,'node_modules')}}
-
-            {test: /\.js$/, loaders: ['react-hot', 'jsx']},
+            // NOTE: the loaders here are resolved to the resources which they are applied to. This means that they are not resolved relative to the configuration file. Loaders are just modules that export a function with a parameter that accepts the content of files that match the test.
+            // NOTE: If you have loaders installed from npm and your node_modules folder is not part of the parent folder of all source files, webpack cannot find the loader. You need to add node_modules as absolute path to the `resolveLoader.root` option. {resolveLoader:{root:path.join(__dirname,'node_modules')}}
+            // Here, we pass .js files through react-hot and jsx-loader transforms.
+            {test: /\.js$/, loaders: ['react-hot','6to5-loader','jsx?harmony']},
             {test: /\.json$/, loaders: ['json']}
         ]
     }
 };
 
-module.exports = config;
-
 if(process.env.NODE_ENV === 'development'){
-    // choose a developer tool to enhance debugging.
-    // eval: each module is executed with eval and //@sourceUrl
+    // choose a developer tool to enhance debugging. eval: each module is executed with eval and //@sourceUrl
     config.devtool = 'eval';
 }
+
+module.exports = config;
 ```
 
 ## (opt) gulp build
@@ -865,3 +815,16 @@ var MainSection = React.createClass({
 
 module.exports = MainSection;
 ```
+
+## Inspirations
+
+- [React-Isomorphic-Seed](https://github.com/htmlxprs/React-Isomorphic-Seed)
+- [isomorphic-react-template](https://github.com/gpbl/isomorphic-react-template)
+- [react-starter-kit](https://github.com/kriasoft/react-starter-kit)
+- [isomorphic-hot-loader](https://github.com/irvinebroque/isomorphic-hot-loader)
+- [jlongster.com](http://jlongster.com/Blog-Rebuild--Build-Systems---Cross-Compiling)
+- [jlogster/blog](https://github.com/jlongster/blog)
+
+## Credits
+
+by Jan Carlo Viray
