@@ -1,17 +1,16 @@
-# Bootstrapping an Isomorphic Application
+# Bootstrapping an Isomorphic Application with ReactJS
 
-Goal for this document is to create an Isomorphic Project with ReactJS/NodeJS with line-by-line explanation within the codes.
-
+Goal for this project is to create an Isomorphic Project with ReactJS with line-by-line explanation.
 
 ## Requirements
 
-- ReactJS
-- Flux (facebook/flux)
-- Gulp (general build)
-- Webpack (js/jsx build)
-- Webpack Dev Server (livereload/hotreload)
-- ExpressJS (server)
-- Docker
+- ReactJS (client/server-side view)
+- Flux (facebook/flux, the architecture for react)
+- Gulp (general build; might not be needed)
+- Webpack (js/jsx build and more)
+- Webpack Dev Server (for “Hot Loading” - a better livereload)
+- ExpressJS (minimal server)
+- Docker (for isolated containers like Heroku)
 - Testing Framework (?)
 
 ## Table of Contents
@@ -19,22 +18,23 @@ Goal for this document is to create an Isomorphic Project with ReactJS/NodeJS wi
 - Directory Setup (build, dist, client, server, test)
 - Required Application Modules
 - Required Development Modules
-- Live Reload / Hot Reload Setup
+- Hot Reload Setup
+- JS/JSX Build System with Watch
 
 TODO:
-- JS/JSX Build System with Watch
 - Initial Server Bootstrap with Express and Supervisor
 - Initial Client Bootstrap with ReactJS
-- Introduction of Flux Architecture
-- Automated Testing with Watch
+- Router
+- Flux Architecture
+- Automated Testing
 - Docker Integration
 - CSS/LESS Build System with Watch
-- Automated Environment Specific Build System (production/development)
+- Environment Specific Build System (production/development)
 
 FUTURE:
 - productionize this
-- yahoo/fluxible integration
 - example app
+- maybe, yahoo/fluxible integration as separate project
 
 ## Directory Setup
 
@@ -69,7 +69,7 @@ npm install --save react
 #### Webpack Build
 
 ```bash
-# browserify alternative; in fact, better than browserify
+# browserify alternative; has more features than browserify
 npm install --save-dev webpack
 
 # for better live-reload (hot loading)
@@ -78,15 +78,19 @@ npm install --save-dev webpack-dev-server
 # webpack loader for jsx files
 npm install --save-dev jsx-loader
 
-# script for nodejs to watch for code changes, and restart
-# your program when it crashes or when a file changes
+# script for nodejs to watch for code changes, and restart your program when it crashes or when a file changes
 npm install --save-dev supervisor
 
 # es6 to es5
 npm install --save-dev 6to5-core
+
+# webpack loader for 6to5
 npm install --save-dev 6to5-loader
 
+# a nice module that allows hot loading with react
 npm install --save-dev react-hot-loader
+
+# a set of complementary tools to React, including the JSX transformer
 npm install --save-dev react-tools
 ```
 
