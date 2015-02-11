@@ -64,9 +64,11 @@ server.use(function(req, res, next){
     // CLIENT: Router.run(routes, Router.HistoryLocation /*HTML5*/, function(Handler, state){
     // SERVER: router.run(function(Handler, state){
     router.run(function(Handler, state){
+
         // CLIENT: React.render(
         // SERVER: React.renderToString(
         content = React.renderToString(
+
             // CLIENT: <Handler routerState={state} environment="browser"/>, document.body
             // SERVER: React.createElement(Handler, { routerState: state, environment: 'server' }), null
             React.createElement(Handler, { routerState: state, environment: 'server' }), null

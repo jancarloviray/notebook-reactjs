@@ -1,16 +1,16 @@
-# Bootstrapping an Isomorphic Application with ReactJS
+# Bootstrapping an Isomorphic Application
 
-Goal for this project is to create an Isomorphic Project with ReactJS with line-by-line explanation.
+Goal for this project is to create an Isomorphic Application with ReactJS with line-by-line explanation.
 
 ## Requirements
 
-- [ReactJS](facebook.github.io/react/) (client/server-side view)
-- [Flux](https://github.com/facebook/flux) (facebook/flux, the architecture for react)
-- [Gulp](https://github.com/gulpjs/gulp) (general build; might not be needed)
-- [Webpack](https://github.com/webpack/webpack) (js/jsx build and more)
-- [Webpack](https://github.com/webpack/webpack-dev-server) Dev Server (for “Hot Loading” - a better livereload)
-- [ExpressJS](https://github.com/expressjs) (minimal server)
-- [Docker](https://github.com/docker/docker) (for isolated containers like Heroku)
+- [ReactJS](facebook.github.io/react/) - client/server-side view
+- [Flux](https://github.com/facebook/flux) - facebook/flux, the architecture for react
+- [Gulp](https://github.com/gulpjs/gulp) - general build; might not be needed
+- [Webpack](https://github.com/webpack/webpack) - js/jsx build and more
+- [Webpack Dev Server](https://github.com/webpack/webpack-dev-server) - for “Hot Loading” - a better livereload
+- [ExpressJS](https://github.com/expressjs) - minimal server
+- [Docker](https://github.com/docker/docker) - for isolated containers like Heroku
 - Testing Framework (?)
 
 ## Table of Contents
@@ -51,8 +51,25 @@ webpack.config.js
 ### Application Modules
 
 ```bash
-# helper files to create the flux architecture
+# CLIENT/SERVER: CORE
+# -------------------
+
+# flux architecture helpers
 npm install --save flux
+
+# reactjs core
+npm install --save react
+
+# react router
+npm install --save react-router
+
+# CLIENT/SERVER: REACT HELPERS
+
+# document title helper
+npm install --save react-document-title
+
+# CLIENT/SERVER: UTILITIES
+# ------------------------
 
 # A simple utility for creating an object with values equal to its keys. Identical to react/lib/keyMirror
 npm install --save keymirror
@@ -60,8 +77,35 @@ npm install --save keymirror
 # _.extend or a ‘shim’ to Object.assign
 npm install --save object-assign
 
-# reactjs utilities and core
-npm install --save react
+# ua parser
+npm install --save ua-parser-js
+
+# date helpers
+npm install --save moment
+
+# SERVER: CORE
+# ------------
+
+# node server
+npm install --save express
+
+# SERVER: UTILITIES
+# -----------------
+
+# utility - allows requiring jsx files
+npm install --save node-jsx
+
+# SERVER: MIDDLEWARES
+# -------------------
+
+# parses request body
+npm install --save body-parser
+
+# gzip/deflate compression
+npm install --save compression
+
+# cors setup
+npm install --save cors
 ```
 
 ### Development Modules
@@ -75,9 +119,6 @@ npm install --save-dev webpack
 # for better live-reload (hot loading)
 npm install --save-dev webpack-dev-server
 
-# webpack loader for jsx files
-npm install --save-dev jsx-loader
-
 # script for nodejs to watch for code changes, and restart your program when it crashes or when a file changes
 npm install --save-dev supervisor
 
@@ -86,6 +127,9 @@ npm install --save-dev 6to5-core
 
 # webpack loader for 6to5
 npm install --save-dev 6to5-loader
+
+# webpack loader for jsx files
+npm install --save-dev jsx-loader
 
 # a nice module that allows hot loading with react
 npm install --save-dev react-hot-loader
