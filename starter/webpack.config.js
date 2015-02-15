@@ -32,7 +32,7 @@ var config = {
     // options affecting the output
     output: {
         // the output directory as absolute path. This is where to put build results when doing production builds.
-        path: path.join(__dirname, '/build/')
+        path: path.join(__dirname, '/build/'),
 
         // the filename of the chunk as relative path inside the output.path directory. Note that you must NOT specify an absolute path here. Use the output.path option.
         // [name] is replaced by name of chunk.

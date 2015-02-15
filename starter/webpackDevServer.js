@@ -1,5 +1,5 @@
 var webpack = require('webpack');
-var WebpackDevServer = require('require-dev-server');
+var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
 var compiler = webpack(config)
 
@@ -14,7 +14,7 @@ new WebpackDevServer(compiler, {
     contentBase: 'http://localhost:3000',
 
     // Important for 'hot module replacement'.
-    hot: true
+    hot: true,
 
     // webpack-dev-middleware options
     // ------------------------------
