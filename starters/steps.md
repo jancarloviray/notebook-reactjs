@@ -55,3 +55,21 @@ module.exports = config;
 
 `npm install webpack-dev-server -g`
 `npm install --save-dev webpack-dev-server`
+
+## Append to package.json run
+
+```
+"scripts": {
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
+  }
+```
+
+**webpack-dev-server** starts a webservice on localhost:8080
+
+**--devtool eval** creates source url for your code, allowing you to pinpoint by filename and line number when errors occur
+
+**--content-base build** points to the output directory configured
+
+## Run the webdev server
+
+`open http://localhost:8080`
