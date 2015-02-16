@@ -4,7 +4,7 @@
 
 `npm init`
 `npm install webpack -g` to install webpack globally
-`npm install webpack` to install project version
+`npm install --save-dev webpack` to install project version
 
 ## Folder Structure
 
@@ -19,7 +19,7 @@ package.json
 webpack.config.js
 ```
 
-## Install Dependencies
+## Install ES6 transpiler
 
 `npm install --save-dev babel-loader
 
@@ -29,7 +29,7 @@ webpack.config.js
 var path = require('path');
 
 const APP_ENTRY = 'app.js'
-const BUILD_DIR = '/build/'
+const BUILD_DIR = 'build'
 const BUNDLE_NAME = 'bundle.js'
 
 var config = {
@@ -42,10 +42,16 @@ var config = {
     },
     module: {
         loaders: [
-        	{test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'}
+            // es6
+            { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
         ]
     }
 };
 
 module.exports = config;
 ```
+
+## Install Webpack Dev Server
+
+`npm install webpack-dev-server -g`
+`npm install --save-dev webpack-dev-server`
