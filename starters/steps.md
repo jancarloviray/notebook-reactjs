@@ -3,9 +3,7 @@
 ## Install Webpack
 
 `npm init`
-
 `npm install webpack -g` to install webpack globally
-
 `npm install webpack` to install project version
 
 ## Folder Structure
@@ -13,12 +11,17 @@
 ```
 /app
 	main.js
+	component.js
 /build
 	bundle.js (auto created)
-	index.html
+index.html
 package.json
 webpack.config.js
 ```
+
+## Install Dependencies
+
+`npm install --save-dev babel-loader
 
 ## Configuration
 
@@ -38,7 +41,9 @@ var config = {
         filename: BUNDLE_NAME
     },
     module: {
-        loaders: []
+        loaders: [
+        	{test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'}
+        ]
     }
 };
 
