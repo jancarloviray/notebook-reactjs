@@ -1,0 +1,22 @@
+{
+    "name": "00-webpack",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "PORT=3000 node dev-server.js"
+    },
+    "author": "Jan Carlo Viray",
+    "license": "ISC",
+    "devDependencies": {
+        "babel-core": "^4.0.1",
+        "babel-loader": "^4.0.0",
+        "jsx-loader": "^0.12.2",
+        "react-hot-loader": "^1.1.5",
+        "webpack": "^1.5.3",
+        "webpack-dev-server": "^1.7.0"
+    },
+    "dependencies": {
+        "react": "^0.12.2"
+    }
+}
