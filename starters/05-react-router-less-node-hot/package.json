@@ -1,0 +1,30 @@
+{
+  "name": "00-webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "PORT=3000 node dev-server.js"
+  },
+  "author": "Jan Carlo Viray",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^4.0.1",
+    "babel-loader": "^4.0.0",
+    "css-loader": "^0.9.1",
+    "file-loader": "^0.8.1",
+    "jsx-loader": "^0.12.2",
+    "less": "^2.4.0",
+    "less-loader": "^2.0.0",
+    "react-hot-loader": "^1.1.5",
+    "style-loader": "^0.8.3",
+    "url-loader": "^0.5.5",
+    "webpack": "^1.5.3",
+    "webpack-dev-server": "^1.7.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.2",
+    "react": "^0.12.2",
+    "react-router": "^0.12.0"
+  }
+}

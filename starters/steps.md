@@ -25,7 +25,7 @@ webpack.config.js
 
 ## Configuration
 
-```
+```javascript
 var path = require('path');
 
 const APP_ENTRY = 'app.js'
@@ -58,7 +58,7 @@ module.exports = config;
 
 ## Append to package.json run
 
-```
+```javascript
 "scripts": {
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
   }
@@ -73,3 +73,33 @@ module.exports = config;
 ## Run the webdev server
 
 `open http://localhost:8080`
+
+## HTML
+
+```html
+<!doctype html>
+<html>
+    <head></head>
+    <body>
+        <script type="text/javascript" src="http://localhost:8080/webpack-dev-server.js"></script>
+        <script type="text/javascript" src="build/bundle.js"></script>
+    </body>
+</html>
+```
+
+## Install React
+
+`npm install --save react`
+
+## Use ReactJS in the code
+
+```
+import React from 'react';
+
+export default React.createClass({
+  render: function () {
+    return React.createElement('h1', null, 'Hello world');
+  }
+});
+```
+
