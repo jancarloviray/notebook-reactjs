@@ -1,14 +1,12 @@
-require('bootstrap');
-require('./styles/app.less');
+'use strict';
 
-import React from 'react';
-import Router from 'react-router';
+// require('bootstrap');
+// require('./styles/app.less');
 
-import Home from './home';
-import Footer from './footer';
-import Navbar from './navbar';
-import Skills from './skills';
-import About from './about';
+let React = require('react');
+let Router = require('react-router');
+let Footer = require('./footer');
+let Navbar = require('./navbar');
 
 const { Route, DefaultRoute, RouteHandler, Link } = Router;
 
@@ -24,15 +22,7 @@ let App = React.createClass({
     }
 });
 
-let routes = (
-    <Route handler={App}>
-        <DefaultRoute handler={Home}/>
-        <Route name="about" path="about" handler={About}/>
-        <Route name="skills" path="skills/:skillName" handler={Skills}/>
-    </Route>
-);
-
-Router.run(routes, (Handler) => React.render(<Handler/>, document.body));
+module.exports = App;
 
 /*
 ERROR: "The following modules couldn't be hot updated: (They would need a full reload!)"

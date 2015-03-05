@@ -1,9 +1,11 @@
-import React from 'react';
-import Router from 'react-router';
+'use strict';
 
-var Link = Router.Link;
+let React = require('react');
+let Router = require('react-router');
 
-export default React.createClass({
+let Link = Router.Link;
+
+module.exports = React.createClass({
     render(){
         return (
             <nav className="navbar navbar-default navbar-fixed-top">

@@ -1,8 +1,10 @@
-import React from 'react';
-import Router from 'react-router';
+'use strict';
+
+let React = require('react');
+let Router = require('react-router');
 const { Route, DefaultRoute, RouteHandler, Link } = Router;
 
-export default React.createClass({
+module.exports = React.createClass({
     mixins: [Router.State],
     render(){
         return (

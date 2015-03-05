@@ -1,28 +1,27 @@
-const path = require('path');
-const webpack = require('webpack');
-const PORT = process.env.PORT;
-const NODE_MODULES_DIR = path.join(__dirname, '/node_modules');
+var path = require('path');
+var webpack = require('webpack');
+var HOT_LOAD_PORT = process.env.HOT_LOAD_PORT || 3001;
+var NODE_MODULES_DIR = path.join(__dirname, '/node_modules');
 
 var config = {
     // adds sourcemapping for better error pointing
     devtool: 'eval',
     cache: true,
-    // Entry point for bundle. If array, all are loaded
-    // with last one being exported
+    // Entry point for bundle. If array, all are loaded with last one being exported
     entry: [
-        'webpack-dev-server/client?http://0.0.0.0:' + PORT,
+        'webpack-dev-server/client?http://0.0.0.0:' + HOT_LOAD_PORT,
         // dev-server does full F5 reload when error (loses state).
         // Use only-dev-server instead
         'webpack/hot/only-dev-server',
-        './client/app.js'
+        './client.js'
     ],
     output: {
         path: path.join(__dirname, '/build/'),
-        filename: 'bundle.js',
+        filename: 'client.js',
         // output path from js perspective. there's no
         // need for this when doing dev-server, but
         // it's good to have similar config as production
-        publicPath: '/build/'
+        publicPath: 'http://0.0.0.0:' + HOT_LOAD_PORT + '/build/'
     },
     resolve: {
         extensions: ['', '.js'],
@@ -55,7 +54,7 @@ var config = {
             },
             {
                 test: /\.js$/,
-                loaders: ['react-hot','babel-loader','jsx?harmony'],
+                loaders: ['react-hot','babel-loader?experimental'],
                 exclude: /node_modules/
             }
         ]
